@@ -19,10 +19,15 @@ ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 
 # Exposed ENV
-#ENV MYSQL_PASS **Random**
+ENV MYSQL_PASS **Random**
+
+# supervisor setup
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add VOLUMEs to allow backup of config and databases
 VOLUME  ["/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
 
 EXPOSE 3306
-CMD ["/run.sh"]
+
+# supervisor to rule them all
+CMD ["/usr/bin/supervisord","-n"]
